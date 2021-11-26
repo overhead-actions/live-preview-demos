@@ -1,0 +1,29 @@
+name: Live Preview FRP
+
+on: pull_request
+
+jobs:
+  default:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start services
+        run: docker-compose up -d
+
+      - name: Start tunnel
+        uses: overhead-actions/live-preview-frp@main
+        with:
+          domain: ${{ github.head_ref }}.arthurbdiniz.com
+
+      - name: Comment PR
+        uses: unsplash/comment-on-pr@v1.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: 'Here is your live preview URL 🚀: http://${{ github.head_ref }}.arthurbdiniz.com'
+          check_for_duplicate_msg: false
+
+      - name: Wait
+        run: sleep 300
