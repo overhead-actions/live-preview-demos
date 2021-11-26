@@ -13,7 +13,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Start tunnel
-        uses: overhead-actions/live-preview@main
+        uses: overhead-actions/live-preview-ngrok@main
         with:
           protocol: http
           port: 4000
